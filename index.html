@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>India Quiz App</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: beige;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .quiz-container {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      width: 90%;
+      max-width: 600px;
+    }
+
+    .question {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .answer-buttons button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background-color: #f1f1f1;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s ease;
+    }
+
+    .answer-buttons button:hover {
+      background-color: #ddd;
+    }
+
+    .btn.correct {
+      background-color: #a0e6a0;
+    }
+
+    .btn.wrong {
+      background-color: #f6a6a6;
+    }
+
+    #next-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border: none;
+      background-color: #333;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="quiz-container">
+    <div class="question" id="question">Question text</div>
+    <div class="answer-buttons" id="answer-buttons"></div>
+    <button id="next-btn">Next</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What is the capital of India?",
+        answers: [
+          { text: "New Delhi", correct: true },
+          { text: "Mumbai", correct: false },
+          { text: "Kolkata", correct: false },
+          { text: "Chennai", correct: false }
+        ]
+      },
+      {
+        question: "Who is known as the Father of the Nation in India?",
+        answers: [
+          { text: "Mahatma Gandhi", correct: true },
+          { text: "Jawaharlal Nehru", correct: false },
+          { text: "Sardar Patel", correct: false },
+          { text: "Subhash Chandra Bose", correct: false }
+        ]
+      },
+      {
+        question: "Which Indian festival is known as the Festival of Lights?",
+        answers: [
+          { text: "Diwali", correct: true },
+          { text: "Holi", correct: false },
+          { text: "Navratri", correct: false },
+          { text: "Eid", correct: false }
+        ]
+      },
+      {
+        question: "Which is the national animal of India?",
+        answers: [
+          { text: "Tiger", correct: true },
+          { text: "Lion", correct: false },
+          { text: "Elephant", correct: false },
+          { text: "Peacock", correct: false }
+        ]
+      },
+      {
+        question: "Who wrote the Indian national anthem?",
+        answers: [
+          { text: "Rabindranath Tagore", correct: true },
+          { text: "Bankim Chandra Chatterjee", correct: false },
+          { text: "Sarojini Naidu", correct: false },
+          { text: "A.P.J Abdul Kalam", correct: false }
+        ]
+      },
+      {
+        question: "Which is the longest river in India?",
+        answers: [
+          { text: "Ganga", correct: true },
+          { text: "Yamuna", correct: false },
+          { text: "Godavari", correct: false },
+          { text: "Narmada", correct: false }
+        ]
+      },
+      {
+        question: "Which city is known as the Silicon Valley of India?",
+        answers: [
+          { text: "Bengaluru", correct: true },
+          { text: "Hyderabad", correct: false },
+          { text: "Pune", correct: false },
+          { text: "Mumbai", correct: false }
+        ]
+      },
+      {
+        question: "In which year did India gain independence?",
+        answers: [
+          { text: "1947", correct: true },
+          { text: "1950", correct: false },
+          { text: "1942", correct: false },
+          { text: "1930", correct: false }
+        ]
+      },
+      {
+        question: "What is the currency of India?",
+        answers: [
+          { text: "Rupee", correct: true },
+          { text: "Taka", correct: false },
+          { text: "Dollar", correct: false },
+          { text: "Yen", correct: false }
+        ]
+      },
+      {
+        question: "Which state is famous for Kathakali dance?",
+        answers: [
+          { text: "Kerala", correct: true },
+          { text: "Punjab", correct: false },
+          { text: "Rajasthan", correct: false },
+          { text: "Assam", correct: false }
+        ]
+      },
+      {
+        question: "Which Indian scientist won the Nobel Prize in Physics?",
+        answers: [
+          { text: "C.V. Raman", correct: true },
+          { text: "Homi Bhabha", correct: false },
+          { text: "A.P.J Abdul Kalam", correct: false },
+          { text: "Vikram Sarabhai", correct: false }
+        ]
+      },
+      {
+        question: "Which Indian state has the highest population?",
+        answers: [
+          { text: "Uttar Pradesh", correct: true },
+          { text: "Maharashtra", correct: false },
+          { text: "Bihar", correct: false },
+          { text: "West Bengal", correct: false }
+        ]
+      },
+      {
+        question: "Which Indian monument is one of the 7 Wonders of the World?",
+        answers: [
+          { text: "Taj Mahal", correct: true },
+          { text: "Qutub Minar", correct: false },
+          { text: "Charminar", correct: false },
+          { text: "India Gate", correct: false }
+        ]
+      },
+      {
+        question: "Which sport is most popular in India?",
+        answers: [
+          { text: "Cricket", correct: true },
+          { text: "Football", correct: false },
+          { text: "Hockey", correct: false },
+          { text: "Badminton", correct: false }
+        ]
+      },
+      {
+        question: "Who was the first Prime Minister of India?",
+        answers: [
+          { text: "Jawaharlal Nehru", correct: true },
+          { text: "Mahatma Gandhi", correct: false },
+          { text: "Indira Gandhi", correct: false },
+          { text: "Rajendra Prasad", correct: false }
+        ]
+      },
+      {
+        question: "What is the national flower of India?",
+        answers: [
+          { text: "Lotus", correct: true },
+          { text: "Rose", correct: false },
+          { text: "Sunflower", correct: false },
+          { text: "Marigold", correct: false }
+        ]
+      },
+      {
+        question: "Which is the national bird of India?",
+        answers: [
+          { text: "Peacock", correct: true },
+          { text: "Parrot", correct: false },
+          { text: "Sparrow", correct: false },
+          { text: "Crow", correct: false }
+        ]
+      },
+      {
+        question: "What is the full form of ISRO?",
+        answers: [
+          { text: "Indian Space Research Organisation", correct: true },
+          { text: "Indian Satellite Rocket Office", correct: false },
+          { text: "International Space Research Office", correct: false },
+          { text: "Institute of Space Research", correct: false }
+        ]
+      },
+      {
+        question: "Which Indian state is famous for tea gardens?",
+        answers: [
+          { text: "Assam", correct: true },
+          { text: "Goa", correct: false },
+          { text: "Punjab", correct: false },
+          { text: "Odisha", correct: false }
+        ]
+      },
+      {
+        question: "Where is the Indian Parliament located?",
+        answers: [
+          { text: "New Delhi", correct: true },
+          { text: "Mumbai", correct: false },
+          { text: "Chandigarh", correct: false },
+          { text: "Kolkata", correct: false }
+        ]
+      }
+    ];
+
+    const questionEl = document.getElementById("question");
+    const answerBtns = document.getElementById("answer-buttons");
+    const nextBtn = document.getElementById("next-btn");
+
+    let currentQuestionIndex = 0;
+    let score = 0;
+
+    function startQuiz() {
+      currentQuestionIndex = 0;
+      score = 0;
+      nextBtn.innerText = "Next";
+      showQuestion();
+    }
+
+    function showQuestion() {
+      resetState();
+      let currentQuestion = questions[currentQuestionIndex];
+      questionEl.innerText = currentQuestion.question;
+      currentQuestion.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.innerText = answer.text;
+        button.classList.add("btn");
+        button.addEventListener("click", () => selectAnswer(button, answer.correct));
+        answerBtns.appendChild(button);
+      });
+    }
+
+    function resetState() {
+      nextBtn.style.display = "none";
+      answerBtns.innerHTML = "";
+    }
+
+    function selectAnswer(button, correct) {
+      const allButtons = answerBtns.querySelectorAll("button");
+      allButtons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.innerText === button.innerText) {
+          btn.classList.add(correct ? "correct" : "wrong");
+        } else if (questions[currentQuestionIndex].answers.find(a => a.text === btn.innerText && a.correct)) {
+          btn.classList.add("correct");
+        }
+      });
+      if (correct) score++;
+      nextBtn.style.display = "inline-block";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      currentQuestionIndex++;
+      if (currentQuestionIndex < questions.length) {
+        showQuestion();
+      } else {
+        showScore();
+      }
+    });
+
+    function showScore() {
+      resetState();
+      questionEl.innerText = `You scored ${score} out of ${questions.length}!`;
+      nextBtn.innerText = "Play Again";
+      nextBtn.style.display = "inline-block";
+      nextBtn.onclick = startQuiz;
+    }
+
+    startQuiz();
+  </script>
+</body>
+</html>
